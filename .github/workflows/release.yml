@@ -154,6 +154,6 @@ jobs:
       #   (must match the `files:` uploaded above, e.g. artifacts/*).
       - name: Attest build provenance
         if: ${{ hashFiles('artifacts/*') != '' }}   # skip until real artifacts are wired
-        uses: actions/attest-build-provenance@v4.1.1
+        uses: actions/attest-build-provenance@v4.2.2
         with:
           subject-path: 'artifacts/*'

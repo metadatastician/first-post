@@ -1,34 +1,15 @@
-# SPDX-License-Identifier: MPL-2.0
-# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
-#
-# AI-MANIFEST.a2ml — AI agent work allocation and policy
-#
-[metadata]
-version = "0.1.0"
-last-updated = "{{CURRENT_DATE}}"
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# 0-AI-MANIFEST.a2ml — Root AI manifest for First Post
 
-[project]
-name = "[YOUR-REPO-NAME]"
-purpose = "{{PROJECT_DESCRIPTION}}"
+## Purpose
 
-[ai-allocation]
-agents = [
-  { name = "CLAUDE", role = "proofs, compilers, repo-local implementation, CI/CD, formal verification, Rust/Idris2/Zig" },
-  { name = "CHATGPT", role = "prose, papers, publication review, standards docs, outreach drafts, letters" },
-  { name = "GEMINI", role = "estate audits, cross-repo sweeps, long-context triage, pattern detection" },
-  { name = "VIBE", role = "UI/frontend, PanLL panels, ReScript components, theming, rapid prototyping" },
-]
+This is the root AI-assistant manifest for **First Post**, a browser idle/strategy toy about teaching young people how to use snail mail. Read this first, then `.machine_readable/descriptiles/STATE.a2ml`, then `README.md`.
 
-[policy]
-rules = [
-  "Do not duplicate tasks across sections. If a task needs multiple LLMs, note the handoff.",
-  "Update THIS file during sessions. Do NOT recreate per-repo TODO files.",
-]
+The repository is a single self-contained HTML file with no build system, no package registry dependency, and no runtime service. Everything the *game* is lives in `first-post.html`; there is no source tree to navigate.
 
-[work-allocation]
-items = [
-  { agent = "CLAUDE", task = "proofs, compilers, repo-local implementation, CI/CD, formal verification, Rust/Idris2/Zig" },
-  { agent = "CHATGPT", task = "prose, papers, publication review, standards docs, outreach drafts, letters" },
-  { agent = "GEMINI", task = "estate audits, cross-repo sweeps, long-context triage, pattern detection" },
-  { agent = "VIBE", task = "UI/frontend, PanLL panels, ReScript components, theming, rapid prototyping" },
-]
+## Invariants (read before editing)
+
+- **This is fictional flavour, not a real tool.** The game simulates physical snail mail. Do not add any network call.
+- **No network calls, ever.** This is load-bearing for the "makes no network calls" claim throughout the docs.
+- **One self-contained file, no build step.** Do not introduce a bundler, a package dependency, or a static-site generator to serve the game itself.
+- Licence is AGPL-3.0-or-later for all code and docs, matching the `metadatastician` org convention.

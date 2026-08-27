@@ -22,6 +22,8 @@ workflows:
     '.github/workflows/guix-policy.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/hypatia-scan.yml': []
+    '.github/workflows/label-triage.yml': []
+    '.github/workflows/labels.yml': []
     '.github/workflows/mirror.yml': []
     '.github/workflows/openssf-compliance.yml':
         - 'actions/checkout@v7.0.1'

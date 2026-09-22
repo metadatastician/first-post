@@ -78,6 +78,22 @@ while IFS= read -r workflow_file; do
         log_error "  $WORKFLOW_NAME: Missing 'name' field"
     fi
 
+    # TEST 1c: The lock-sync gate must remain manually dispatchable. A failed
+    # startup creates no jobs to rerun, so workflow_dispatch is the recovery
+    # path for reproducing and verifying lockfile fixes.
+    if [ "$WORKFLOW_NAME" = "lock-sync-gate.yml" ]; then
+        if awk '
+            /^on:[[:space:]]*$/ { in_on = 1; next }
+            in_on && /^[^[:space:]#]/ { exit }
+            in_on && /^[[:space:]]+workflow_dispatch:[[:space:]]*$/ { found = 1 }
+            END { exit !found }
+        ' "$workflow_file"; then
+            log_pass "  $WORKFLOW_NAME: Manual dispatch trigger present"
+        else
+            log_error "  $WORKFLOW_NAME: Missing workflow_dispatch trigger"
+        fi
+    fi
+
 done < <(find "$WORKFLOWS_DIR" \( -name "*.yml" -o -name "*.yaml" \) 2>/dev/null | sort)
 
 #==============================================================================

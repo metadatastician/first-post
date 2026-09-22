@@ -65,35 +65,41 @@ run_checker() {
 
 expect_success() {
     local name="$1"
-    local expected="$2"
+    shift
     run_checker "$name"
     if [ "$CHECK_STATUS" -ne 0 ]; then
         fail "$name should succeed (exit $CHECK_STATUS)"
         sed -n '1,160p' "$CHECK_OUTPUT" >&2
         return 0
     fi
-    if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
-        fail "$name should report: $expected"
-        sed -n '1,160p' "$CHECK_OUTPUT" >&2
-        return 0
-    fi
+    local expected
+    for expected in "$@"; do
+        if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
+            fail "$name should report: $expected"
+            sed -n '1,160p' "$CHECK_OUTPUT" >&2
+            return 0
+        fi
+    done
     pass "$name"
 }
 
 expect_failure() {
     local name="$1"
-    local expected="$2"
+    shift
     run_checker "$name"
     if [ "$CHECK_STATUS" -eq 0 ]; then
         fail "$name should fail"
         sed -n '1,160p' "$CHECK_OUTPUT" >&2
         return 0
     fi
-    if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
-        fail "$name should mention: $expected"
-        sed -n '1,160p' "$CHECK_OUTPUT" >&2
-        return 0
-    fi
+    local expected
+    for expected in "$@"; do
+        if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
+            fail "$name should mention: $expected"
+            sed -n '1,160p' "$CHECK_OUTPUT" >&2
+            return 0
+        fi
+    done
     pass "$name"
 }
 
@@ -205,6 +211,75 @@ test_reports_lock_entry_for_deleted_workflow() {
     expect_failure deleted-workflow 'lockfile entry for a workflow file that does not exist'
 }
 
+test_accepts_empty_lock_entry_for_zero_uses_workflow() {
+    new_case covered-zero-uses
+    write_workflow maintenance.yaml \
+        'name: Maintenance' \
+        'jobs:' \
+        '  clean:' \
+        '    runs-on: ubuntu-latest' \
+        '    steps:' \
+        '      - run: true'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/maintenance.yaml': []" \
+        'dependencies:'
+    expect_success covered-zero-uses \
+        'actions.lock is in sync and transitively closed' \
+        'every workflow file has a lockfile key (zero-uses: workflows included)'
+}
+
+test_reports_unlisted_zero_uses_workflow() {
+    new_case unlisted-zero-uses
+    write_workflow covered.yml \
+        'name: Covered' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow unlisted.yml \
+        'name: Unlisted' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/covered.yml': []" \
+        'dependencies:'
+    expect_failure unlisted-zero-uses \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/unlisted.yml' \
+        "with no uses: takes an empty list:  '.github/workflows/x.yml': []" \
+        're-running the tool may not add it'
+}
+
+test_reports_every_unlisted_workflow() {
+    new_case multiple-unlisted
+    write_workflow covered.yml \
+        'name: Covered' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow alpha.yml \
+        'name: Alpha' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow omega.yaml \
+        'name: Omega' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/covered.yml': []" \
+        'dependencies:'
+    expect_failure multiple-unlisted \
+        '2 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/alpha.yml' \
+        '.github/workflows/omega.yaml'
+}
+
 test_fails_without_a_lockfile() {
     new_case no-lockfile
     write_workflow ci.yml \
@@ -250,6 +325,9 @@ test_reports_orphaned_lock_entry
 test_reports_transitive_dangling_dependency
 test_accepts_self_repository_reference
 test_reports_lock_entry_for_deleted_workflow
+test_accepts_empty_lock_entry_for_zero_uses_workflow
+test_reports_unlisted_zero_uses_workflow
+test_reports_every_unlisted_workflow
 test_fails_without_a_lockfile
 test_fails_without_workflow_files
 test_compares_refs_case_sensitively

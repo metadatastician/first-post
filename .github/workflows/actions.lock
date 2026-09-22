@@ -26,6 +26,7 @@ workflows:
         - 'hyperpolymath/standards@bd0df9ead7faf0cdfe0e13e7966d91e28d0101d4'
     '.github/workflows/label-triage.yml': []
     '.github/workflows/labels.yml': []
+    '.github/workflows/lock-sync-gate.yml': []
     '.github/workflows/mirror.yml':
         - 'hyperpolymath/standards@bd0df9ead7faf0cdfe0e13e7966d91e28d0101d4'
     '.github/workflows/openssf-compliance.yml':

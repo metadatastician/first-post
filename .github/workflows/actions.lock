@@ -14,7 +14,6 @@ workflows:
         - 'dependabot/fetch-metadata@v3.1.0'
     '.github/workflows/dogfood-gate.yml':
         - 'actions/checkout@v7.0.1'
-        - 'hyperpolymath/a2ml-ecosystem@main'
         - 'hyperpolymath/k9-ecosystem@main'
     '.github/workflows/estate-rules.yml':
         - 'actions/checkout@v7.0.1'
@@ -26,6 +25,7 @@ workflows:
         - 'hyperpolymath/standards@bd0df9ead7faf0cdfe0e13e7966d91e28d0101d4'
     '.github/workflows/label-triage.yml': []
     '.github/workflows/labels.yml': []
+    '.github/workflows/lock-sync-gate.yml': []
     '.github/workflows/mirror.yml':
         - 'hyperpolymath/standards@bd0df9ead7faf0cdfe0e13e7966d91e28d0101d4'
     '.github/workflows/openssf-compliance.yml':

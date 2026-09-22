@@ -63,37 +63,45 @@ run_checker() {
     fi
 }
 
+# Assert that a fixture passes and emits every expected diagnostic.
 expect_success() {
     local name="$1"
-    local expected="$2"
+    shift
     run_checker "$name"
     if [ "$CHECK_STATUS" -ne 0 ]; then
         fail "$name should succeed (exit $CHECK_STATUS)"
         sed -n '1,160p' "$CHECK_OUTPUT" >&2
         return 0
     fi
-    if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
-        fail "$name should report: $expected"
-        sed -n '1,160p' "$CHECK_OUTPUT" >&2
-        return 0
-    fi
+    local expected
+    for expected in "$@"; do
+        if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
+            fail "$name should report: $expected"
+            sed -n '1,160p' "$CHECK_OUTPUT" >&2
+            return 0
+        fi
+    done
     pass "$name"
 }
 
+# Assert that a fixture fails and emits every expected diagnostic.
 expect_failure() {
     local name="$1"
-    local expected="$2"
+    shift
     run_checker "$name"
     if [ "$CHECK_STATUS" -eq 0 ]; then
         fail "$name should fail"
         sed -n '1,160p' "$CHECK_OUTPUT" >&2
         return 0
     fi
-    if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
-        fail "$name should mention: $expected"
-        sed -n '1,160p' "$CHECK_OUTPUT" >&2
-        return 0
-    fi
+    local expected
+    for expected in "$@"; do
+        if ! grep -Fq -- "$expected" "$CHECK_OUTPUT"; then
+            fail "$name should mention: $expected"
+            sed -n '1,160p' "$CHECK_OUTPUT" >&2
+            return 0
+        fi
+    done
     pass "$name"
 }
 
@@ -205,6 +213,148 @@ test_reports_lock_entry_for_deleted_workflow() {
     expect_failure deleted-workflow 'lockfile entry for a workflow file that does not exist'
 }
 
+# Verify that a zero-uses workflow is covered by an empty lockfile entry.
+test_accepts_empty_lock_entry_for_zero_uses_workflow() {
+    new_case covered-zero-uses
+    write_workflow maintenance.yaml \
+        'name: Maintenance' \
+        'jobs:' \
+        '  clean:' \
+        '    runs-on: ubuntu-latest' \
+        '    steps:' \
+        '      - run: true'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/maintenance.yaml': []" \
+        'dependencies:'
+    expect_success covered-zero-uses \
+        'actions.lock is in sync and transitively closed' \
+        'every workflow file has a lockfile key (zero-uses: workflows included)'
+}
+
+# Verify that an uncovered zero-uses workflow is reported with remediation.
+test_reports_unlisted_zero_uses_workflow() {
+    new_case unlisted-zero-uses
+    write_workflow covered.yml \
+        'name: Covered' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow unlisted.yml \
+        'name: Unlisted' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/covered.yml': []" \
+        'dependencies:'
+    expect_failure unlisted-zero-uses \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/unlisted.yml' \
+        "with no uses: takes an empty list:  '.github/workflows/x.yml': []" \
+        're-running the tool may not add it'
+}
+
+# Regression: coverage must still fail when the lockfile has no workflow keys
+# at all. This is the exact shape that made lock-sync-gate.yml fail at startup.
+test_reports_unlisted_workflow_when_lock_has_no_workflow_keys() {
+    new_case empty-workflow-map
+    write_workflow lock-sync-gate.yml \
+        'name: Lock Sync Gate' \
+        'on:' \
+        '  workflow_dispatch:' \
+        'jobs:' \
+        '  check:' \
+        '    runs-on: ubuntu-latest' \
+        '    steps:' \
+        '      - run: true'
+    write_lock \
+        'workflows:' \
+        'dependencies:'
+    expect_failure empty-workflow-map \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/lock-sync-gate.yml'
+}
+
+# Verify that workflows with actions are reported by both coverage checks.
+test_reports_unlisted_workflow_with_external_uses() {
+    new_case unlisted-with-uses
+    write_workflow covered.yml \
+        'name: Covered' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow unlisted.yml \
+        'name: Unlisted' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest' \
+        '    steps:' \
+        '      - uses: vendor/action@v1'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/covered.yml': []" \
+        'dependencies:' \
+        "    'vendor/action@v1':" \
+        "        ref: 'v1'"
+    expect_failure unlisted-with-uses \
+        'not onboarded: no lockfile entry for this path' \
+        'unlocked refs: vendor/action@v1' \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/unlisted.yml'
+}
+
+# Verify that only canonical workflow paths satisfy lockfile coverage.
+test_requires_canonical_path_for_workflow_coverage() {
+    new_case noncanonical-workflow-key
+    write_workflow ci.yml \
+        'name: CI' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_lock \
+        'workflows:' \
+        "    'ci.yml': []" \
+        'dependencies:'
+    expect_failure noncanonical-workflow-key \
+        'lockfile entry for a workflow file that does not exist' \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/ci.yml'
+}
+
+# Verify that one failure reports every workflow missing from the lockfile.
+test_reports_every_unlisted_workflow() {
+    new_case multiple-unlisted
+    write_workflow covered.yml \
+        'name: Covered' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow alpha.yml \
+        'name: Alpha' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow omega.yaml \
+        'name: Omega' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/covered.yml': []" \
+        'dependencies:'
+    expect_failure multiple-unlisted \
+        '2 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/alpha.yml' \
+        '.github/workflows/omega.yaml'
+}
+
 test_fails_without_a_lockfile() {
     new_case no-lockfile
     write_workflow ci.yml \
@@ -250,6 +400,12 @@ test_reports_orphaned_lock_entry
 test_reports_transitive_dangling_dependency
 test_accepts_self_repository_reference
 test_reports_lock_entry_for_deleted_workflow
+test_accepts_empty_lock_entry_for_zero_uses_workflow
+test_reports_unlisted_zero_uses_workflow
+test_reports_unlisted_workflow_when_lock_has_no_workflow_keys
+test_reports_unlisted_workflow_with_external_uses
+test_requires_canonical_path_for_workflow_coverage
+test_reports_every_unlisted_workflow
 test_fails_without_a_lockfile
 test_fails_without_workflow_files
 test_compares_refs_case_sensitively

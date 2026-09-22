@@ -63,6 +63,7 @@ run_checker() {
     fi
 }
 
+# Assert that a fixture passes and emits every expected diagnostic.
 expect_success() {
     local name="$1"
     shift
@@ -83,6 +84,7 @@ expect_success() {
     pass "$name"
 }
 
+# Assert that a fixture fails and emits every expected diagnostic.
 expect_failure() {
     local name="$1"
     shift
@@ -211,6 +213,7 @@ test_reports_lock_entry_for_deleted_workflow() {
     expect_failure deleted-workflow 'lockfile entry for a workflow file that does not exist'
 }
 
+# Verify that a zero-uses workflow is covered by an empty lockfile entry.
 test_accepts_empty_lock_entry_for_zero_uses_workflow() {
     new_case covered-zero-uses
     write_workflow maintenance.yaml \
@@ -229,6 +232,7 @@ test_accepts_empty_lock_entry_for_zero_uses_workflow() {
         'every workflow file has a lockfile key (zero-uses: workflows included)'
 }
 
+# Verify that an uncovered zero-uses workflow is reported with remediation.
 test_reports_unlisted_zero_uses_workflow() {
     new_case unlisted-zero-uses
     write_workflow covered.yml \
@@ -253,6 +257,77 @@ test_reports_unlisted_zero_uses_workflow() {
         're-running the tool may not add it'
 }
 
+# Regression: coverage must still fail when the lockfile has no workflow keys
+# at all. This is the exact shape that made lock-sync-gate.yml fail at startup.
+test_reports_unlisted_workflow_when_lock_has_no_workflow_keys() {
+    new_case empty-workflow-map
+    write_workflow lock-sync-gate.yml \
+        'name: Lock Sync Gate' \
+        'on:' \
+        '  workflow_dispatch:' \
+        'jobs:' \
+        '  check:' \
+        '    runs-on: ubuntu-latest' \
+        '    steps:' \
+        '      - run: true'
+    write_lock \
+        'workflows:' \
+        'dependencies:'
+    expect_failure empty-workflow-map \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/lock-sync-gate.yml'
+}
+
+# Verify that workflows with actions are reported by both coverage checks.
+test_reports_unlisted_workflow_with_external_uses() {
+    new_case unlisted-with-uses
+    write_workflow covered.yml \
+        'name: Covered' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_workflow unlisted.yml \
+        'name: Unlisted' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest' \
+        '    steps:' \
+        '      - uses: vendor/action@v1'
+    write_lock \
+        'workflows:' \
+        "    '.github/workflows/covered.yml': []" \
+        'dependencies:' \
+        "    'vendor/action@v1':" \
+        "        ref: 'v1'"
+    expect_failure unlisted-with-uses \
+        'not onboarded: no lockfile entry for this path' \
+        'unlocked refs: vendor/action@v1' \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/unlisted.yml'
+}
+
+# Verify that only canonical workflow paths satisfy lockfile coverage.
+test_requires_canonical_path_for_workflow_coverage() {
+    new_case noncanonical-workflow-key
+    write_workflow ci.yml \
+        'name: CI' \
+        'jobs:' \
+        '  build:' \
+        '    runs-on: ubuntu-latest'
+    write_lock \
+        'workflows:' \
+        "    'ci.yml': []" \
+        'dependencies:'
+    expect_failure noncanonical-workflow-key \
+        'lockfile entry for a workflow file that does not exist' \
+        'FAIL actions.lock: UNLISTED WORKFLOWS' \
+        '1 workflow file(s) have no key in the lockfile' \
+        '.github/workflows/ci.yml'
+}
+
+# Verify that one failure reports every workflow missing from the lockfile.
 test_reports_every_unlisted_workflow() {
     new_case multiple-unlisted
     write_workflow covered.yml \
@@ -327,6 +402,9 @@ test_accepts_self_repository_reference
 test_reports_lock_entry_for_deleted_workflow
 test_accepts_empty_lock_entry_for_zero_uses_workflow
 test_reports_unlisted_zero_uses_workflow
+test_reports_unlisted_workflow_when_lock_has_no_workflow_keys
+test_reports_unlisted_workflow_with_external_uses
+test_requires_canonical_path_for_workflow_coverage
 test_reports_every_unlisted_workflow
 test_fails_without_a_lockfile
 test_fails_without_workflow_files

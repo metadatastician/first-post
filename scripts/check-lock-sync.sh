@@ -160,7 +160,7 @@ FNR == 1 { wf = FILENAME }
     raw = m[1]
     gsub(/^["']|["']$/, "", raw)
     gsub(/[[:space:]]+$/, "", raw)
-    if (raw ~ /^\$\//) { dollar[wf] = dollar[wf] " " raw; next }   # known corruption
+    if (raw ~ /^\$\//) next   # same-repository action or reusable workflow
     n = norm(raw)
     if (n != "") { uses[wf, ck(n)] = 1; useslist[wf] = useslist[wf] " " n }
   }

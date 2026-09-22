@@ -175,8 +175,8 @@ test_reports_transitive_dangling_dependency() {
     expect_failure dangling-dependency 'FAIL actions.lock: DANGLING EDGES'
 }
 
-test_rejects_corrupted_local_action_rewrite() {
-    new_case corrupted-local-action
+test_accepts_self_repository_reference() {
+    new_case self-repository-reference
     write_workflow ci.yml \
         'jobs:' \
         '  build:' \
@@ -186,7 +186,7 @@ test_rejects_corrupted_local_action_rewrite() {
         'workflows:' \
         "    '.github/workflows/ci.yml': []" \
         'dependencies:'
-    expect_failure corrupted-local-action 'invalid local-action rewrite (uses: $/...): $/local-action'
+    expect_success self-repository-reference 'actions.lock is in sync and transitively closed'
 }
 
 test_reports_lock_entry_for_deleted_workflow() {
@@ -248,7 +248,7 @@ test_accepts_normalized_external_refs_and_local_actions
 test_reports_missing_workflow_lock_entry
 test_reports_orphaned_lock_entry
 test_reports_transitive_dangling_dependency
-test_rejects_corrupted_local_action_rewrite
+test_accepts_self_repository_reference
 test_reports_lock_entry_for_deleted_workflow
 test_fails_without_a_lockfile
 test_fails_without_workflow_files

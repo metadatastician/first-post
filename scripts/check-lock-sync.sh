@@ -58,23 +58,23 @@ for cand in gawk awk; do
     AWK="$cand"; break
   fi
 done
-if [ -z "$AWK" ]; then
+if [[ -z "$AWK" ]]; then
   echo "check-lock-sync: FATAL: no awk supporting 3-argument match() (need gawk)" >&2
   echo "check-lock-sync: install it with: sudo apt-get install -y gawk" >&2
   exit 1
 fi
 
-if [ ! -f "$LOCK" ]; then
+if [[ ! -f "$LOCK" ]]; then
   echo "check-lock-sync: FATAL: no lockfile at $LOCK" >&2
   exit 1
 fi
 
 shopt -s nullglob
 WORKFLOWS=("$WF_DIR"/*.yml "$WF_DIR"/*.yaml)
-if [ "${#WORKFLOWS[@]}" -gt 1 ]; then
+if [[ "${#WORKFLOWS[@]}" -gt 1 ]]; then
   mapfile -t WORKFLOWS < <(printf '%s\n' "${WORKFLOWS[@]}" | sort -u)
 fi
-if [ "${#WORKFLOWS[@]}" -eq 0 ]; then
+if [[ "${#WORKFLOWS[@]}" -eq 0 ]]; then
   echo "check-lock-sync: FATAL: no workflow files under $WF_DIR" >&2
   exit 1
 fi

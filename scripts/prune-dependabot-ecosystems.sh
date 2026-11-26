@@ -30,6 +30,12 @@ if [ ! -f "$file" ]; then
     exit 0
 fi
 
+# An empty file has no entries; awk would see no record and write no message.
+if [ ! -s "$file" ]; then
+    echo "  dependabot: no ecosystem entries found"
+    exit 0
+fi
+
 tmp=$(mktemp)
 trap 'rm -f "$tmp" "$tmp.msg"' EXIT
 

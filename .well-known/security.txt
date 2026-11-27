@@ -11,4 +11,4 @@ Contact: mailto:355856132+HoTT-stuff@users.noreply.github.com
 Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en
 Canonical: https://github.com/metadatastician/first-post/.well-known/security.txt
-Policy: https://github.com/metadatastician/first-post/blob/main/SECURITY.md
+Policy: https://github.com/metadatastician/first-post/blob/main/.github/SECURITY.md

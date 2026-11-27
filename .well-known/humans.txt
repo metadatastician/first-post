@@ -2,8 +2,8 @@
 # humanstxt.org
 
 /* TEAM */
-Maintainer: {{AUTHOR}} (metadatastician)
-Contact: {{AUTHOR_EMAIL}}
+Maintainer: hyperpolymath (metadatastician)
+Contact: 355856132+HoTT-stuff@users.noreply.github.com
 From: United Kingdom
 
 /* SITE */

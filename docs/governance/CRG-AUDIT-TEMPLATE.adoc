@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: CC-BY-SA-4.0
 // Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 = first-post — CRG Audit (2026-11-27)
-{{AUTHOR}}
+hyperpolymath
 2026-11-27
 :toc:
 :sectnums:
@@ -28,7 +28,7 @@ Evaluates the `first-post` repository against
   * `docs/READINESS.md` (if present) → per-component grades
   * Third-party badges (Glama, OpenSSF, etc.) if any — note date and scope
 - Audit date: 2026-11-27
-- Auditor: {{AUTHOR}}
+- Auditor: hyperpolymath
 
 The audit grades the repo *as-is today*, not aspirationally.
 

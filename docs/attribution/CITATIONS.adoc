@@ -22,7 +22,7 @@
 
 == OSCOLA
 
-{{AUTHOR}}, 'first-post' (2026) <https://github.com/metadatastician/first-post>
+hyperpolymath, 'first-post' (2026) <https://github.com/metadatastician/first-post>
 
 == MLA
 

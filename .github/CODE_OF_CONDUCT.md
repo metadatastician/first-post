@@ -12,7 +12,7 @@ Replace all {{PLACEHOLDER}} values:
   first-post     - Your project name
   metadatastician            - GitHub/GitLab username or org
   first-post             - Repository name
-  {{CONDUCT_EMAIL}}    - Email for conduct reports
+  355856132+HoTT-stuff@users.noreply.github.com    - Email for conduct reports
   {{CONDUCT_TEAM}}     - Name of conduct team/committee
   {{RESPONSE_TIME}}    - Initial response SLA (e.g., 48 hours)
   2026     - Current year
@@ -140,7 +140,7 @@ If you experience or witness unacceptable behaviour, or have any other concerns,
 
 | Method | Details | Best For |
 |--------|---------|----------|
-| **Email** | {{CONDUCT_EMAIL}} | Detailed reports, sensitive matters |
+| **Email** | 355856132+HoTT-stuff@users.noreply.github.com | Detailed reports, sensitive matters |
 | **Private Message** | Contact any maintainer directly | Quick questions, minor issues |
 
 **What to Include**
@@ -242,7 +242,7 @@ For contributors with elevated access (Perimeter 2 or 1):
 If you believe an enforcement decision was made in error:
 
 1. **Wait 7 days** after the decision (cooling-off period)
-2. **Email** {{CONDUCT_EMAIL}} with subject line "Appeal: [Original Report ID]"
+2. **Email** 355856132+HoTT-stuff@users.noreply.github.com with subject line "Appeal: [Original Report ID]"
 3. **Explain** why you believe the decision should be reconsidered
 4. **Provide** any new information not previously available
 
@@ -322,7 +322,7 @@ We thank these communities for their leadership in creating welcoming spaces.
 If you have questions about this Code of Conduct:
 
 - Open a [Discussion](https://github.com/metadatastician/first-post/discussions) (for general questions)
-- Email {{CONDUCT_EMAIL}} (for private questions)
+- Email 355856132+HoTT-stuff@users.noreply.github.com (for private questions)
 - Contact any maintainer directly
 
 ---

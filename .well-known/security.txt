@@ -7,7 +7,7 @@
 # field had nothing to reference and shipped the literal token instead — which
 # also made this file unparseable. Report via the Policy: URL below.
 
-Contact: mailto:{{SECURITY_EMAIL}}
+Contact: mailto:355856132+HoTT-stuff@users.noreply.github.com
 Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en
 Canonical: https://github.com/metadatastician/first-post/.well-known/security.txt

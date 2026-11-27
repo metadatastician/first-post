@@ -20,7 +20,7 @@ K9!
       name = "setup-repo",
       version = "1.0.0",
       description = "Automated repository setup with RSR standards",
-      author = "{{AUTHOR}} <{{AUTHOR_EMAIL}}>",
+      author = "hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com>",
     },
     warnings = [
       "This component has full system access",
@@ -104,8 +104,8 @@ K9!
       description = "Initialize Git repository",
       commands = [
         "git init -b %{config.git.default_branch}",
-        "git config user.name '{{AUTHOR}}'",
-        "git config user.email '{{AUTHOR_EMAIL}}'",
+        "git config user.name 'hyperpolymath'",
+        "git config user.email '355856132+HoTT-stuff@users.noreply.github.com'",
         "echo '✓ Git initialized'",
       ],
     },

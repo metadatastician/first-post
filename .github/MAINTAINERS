@@ -4,7 +4,7 @@
 # Format: Name <email> (role)
 # Replace placeholders with actual maintainer information.
 
-{{AUTHOR}} <{{AUTHOR_EMAIL}}> (Lead Maintainer)
+hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com> (Lead Maintainer)
 
 # Additional maintainers:
 # Name <email> (role)

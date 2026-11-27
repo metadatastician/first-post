@@ -11,7 +11,7 @@ This document lists the maintainers of this project and their responsibilities.
 |===
 | Name | Role | Contact
 
-| {{AUTHOR}}
+| hyperpolymath
 | Lead Maintainer
 | https://github.com/metadatastician[@metadatastician]
 |===

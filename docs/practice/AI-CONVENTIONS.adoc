@@ -38,8 +38,8 @@ Per estate policy (hyperpolymath/standards `LICENCE-POLICY.adoc` Rule 1 + Addend
 
 ## Author Attribution
 
-- Name: **{{AUTHOR}}**
-- Email: **{{AUTHOR_EMAIL}}**
+- Name: **hyperpolymath**
+- Email: **355856132+HoTT-stuff@users.noreply.github.com**
 - Copyright: `Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>`
 
 ## State Files

@@ -4,7 +4,7 @@
 
 *Standard:* link:https://github.com/metadatastician/standards/tree/main/component-readiness-grades[Component Readiness Grades (CRG) v2.0 STRICT] +
 *Assessed:* 2026-11-27 +
-*Assessor:* {{AUTHOR}} +
+*Assessor:* hyperpolymath +
 *Previous assessment:* _<date or "none">_
 
 *Current Grade:* X

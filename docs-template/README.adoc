@@ -21,7 +21,7 @@ carve-out).
 == How to adopt
 
 . Copy `docs-template/` → `docs/` in your repo.
-. Replace `first-post`, `metadatastician`, `{{AUTHOR}}`, `{{AUTHOR_EMAIL}}`,
+. Replace `first-post`, `metadatastician`, `hyperpolymath`, `355856132+HoTT-stuff@users.noreply.github.com`,
   `2026` placeholders.
 . Delete any sections that genuinely do not apply (don't leave empty
   scaffolding — the 2026-05-26 doc-debt audit flagged 61 estate repos

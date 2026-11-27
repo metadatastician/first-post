@@ -88,7 +88,7 @@ file. Bring a counter-example, a failing run, or a contradicting source.
 | Branch | main
 | Timestamp (UTC) | <ISO-8601 UTC timestamp>
 | Toolchain | <compilers / provers / versions used to ground the claims>
-| Affirmed by | {{AUTHOR}} <{{AUTHOR_EMAIL}}>
+| Affirmed by | hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com>
 |===
 
 _Landed by a signed git commit. Verify with `git log --show-signature` that the

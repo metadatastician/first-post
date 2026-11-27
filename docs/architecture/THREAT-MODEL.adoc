@@ -13,7 +13,7 @@
 | Project       | first-post               |
 | Version       | 1.0                            |
 | Last Reviewed | 2026-11-27                       |
-| Author        | {{AUTHOR}}                     |
+| Author        | hyperpolymath                     |
 | Methodology   | STRIDE                         |
 
 ## Scope

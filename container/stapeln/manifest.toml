@@ -17,7 +17,7 @@ tracking.
 """
 license = "{{LICENSE}}"
 homepage = "https://github.com/metadatastician/first-post"
-maintainer = "{{AUTHOR}} <{{EMAIL}}>"
+maintainer = "hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com>"
 
 [provenance]
 upstream = "https://github.com/metadatastician/first-post"

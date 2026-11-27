@@ -196,7 +196,7 @@ log_step "Checking for un-deleted template instruction blocks"
 # 2026-08-04. Catch it by name instead.
 LEFTOVER=$(grep -rl 'TEMPLATE INSTRUCTIONS' "$TEST_REPO_PATH" \
     --exclude-dir=.git 2>/dev/null \
-    | grep -vE '/(scripts/strip-instruction-blocks\.py|build/just/repo-init\.just|tests/e2e/template_instantiation_test\.sh)$' || true)
+    | grep -vE '/(scripts/strip-instruction-blocks\.sh|build/just/repo-init\.just|tests/e2e/template_instantiation_test\.sh)$' || true)
 if [ -n "$LEFTOVER" ]; then
     log_error "just repo-init left a TEMPLATE INSTRUCTIONS block in:"
     echo "$LEFTOVER" | sed 's/^/    /' >&2

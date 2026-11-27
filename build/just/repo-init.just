@@ -286,7 +286,7 @@ repo-init archetype="":
     # token, so the sed pass above has nothing to match, yet every placeholder
     # gate greps exactly that shape — a repo with every real token correctly
     # substituted still trips its own gate. Rationale and measurements in
-    # scripts/strip-instruction-blocks.py.
+    # scripts/strip-instruction-blocks.sh.
     #
     # Runs AFTER substitution, so real tokens are already filled; only the
     # instructions go. Deliberately skipped for *-template-repo itself: the
@@ -295,7 +295,7 @@ repo-init archetype="":
     if [ "$REPO" != "${REPO%-template-repo}" ]; then
         echo "  instruction blocks: skipped (this IS a template repo)"
     else
-        python3 scripts/strip-instruction-blocks.py .
+        bash scripts/strip-instruction-blocks.sh .
     fi
 
     # --- Dependabot ecosystem pass -----------------------------------------
@@ -304,13 +304,13 @@ repo-init archetype="":
     # declaring `pip` have no Python manifest, and each such entry fails on
     # every scheduled run. Prune on the ARCHETYPE rather than on file presence —
     # a freshly minted tree has no manifests yet, so presence would delete
-    # everything. Rationale in scripts/prune-dependabot-ecosystems.py.
+    # everything. Rationale in scripts/prune-dependabot-ecosystems.sh.
     keep_eco="github-actions"
     case "${ARCH_PRESET:-}" in *rust*|*cargo*) keep_eco="$keep_eco cargo" ;; esac
     case "${ARCH_PRESET:-}" in *node*|*js*|*ts*|*deno*|*bun*|*web*) keep_eco="$keep_eco npm" ;; esac
     case "${ARCH_PRESET:-}" in *elixir*|*mix*) keep_eco="$keep_eco mix" ;; esac
     case "${ARCH_PRESET:-}" in *python*|*py*) keep_eco="$keep_eco pip" ;; esac
-    python3 scripts/prune-dependabot-ecosystems.py .github/dependabot.yml $keep_eco
+    bash scripts/prune-dependabot-ecosystems.sh .github/dependabot.yml $keep_eco
 
     # --- Self-name pass (ADR-0003) -----------------------------------------
     # The template's own name is written as a LITERAL, not as a placeholder
@@ -595,7 +595,7 @@ repo-init archetype="":
     # so would the test that guards the fix. All three are tooling, not
     # community-health documents, so a mention in them cannot mislead a reader
     # about what this project's Code of Conduct says.
-    LEFTOVER_BLOCKS=$(grep -rl 'TEMPLATE INSTRUCTIONS' . --exclude-dir=.git 2>/dev/null | grep -vE '^\./(scripts/strip-instruction-blocks\.py|build/just/repo-init\.just|tests/e2e/template_instantiation_test\.sh)$' || true)
+    LEFTOVER_BLOCKS=$(grep -rl 'TEMPLATE INSTRUCTIONS' . --exclude-dir=.git 2>/dev/null | grep -vE '^\./(scripts/strip-instruction-blocks\.sh|build/just/repo-init\.just|tests/e2e/template_instantiation_test\.sh)$' || true)
     if [ -n "$LEFTOVER_BLOCKS" ]; then
         echo ""
         echo "Un-deleted TEMPLATE INSTRUCTIONS block in:"

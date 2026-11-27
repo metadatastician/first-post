@@ -1,0 +1,47 @@
+;; SPDX-License-Identifier: MPL-2.0
+;
+; The repo deed of first-post. Minimal: identity, forges, lineage, status,
+; maturity and ecosystem only. The id is the ADR-008 profile C UUIDv8 of the
+; birth path in the domain chora-registry, minted once and never re-derived.
+; The ply, manifest and canon clauses are not carried here yet; this repo
+; still keeps its other machine-readable records under .machine_readable/.
+(repo-deed
+  :schema-version "1.0.0"
+  :canonical-name "first-post"
+  :beholding-chora #u5"estate/chora"
+  :repo-uuid #uuid"aa87090b-9cdf-84e2-bd74-8cc87e3f60ff"
+  (identity
+    :primary-forge github
+    :owner "metadatastician")
+  (forges
+    :github "metadatastician/first-post")
+  (lineage
+    :type standalone
+    :parent ""
+    :born "2026-11-26"
+    :previous-names ()
+    :instantiated-from "rsr-template-repo")
+  (status
+    :phase incubating
+    :since "2026-11-26"
+    :present #t
+    :aliases ()
+    :merged-into ""
+    :superseded-by ""
+    :successors ()
+    :ended ""
+    (history
+      (entry :phase incubating :since "2026-11-26" :note "created from rsr-template-repo; clade not yet chosen; not yet registered")))
+  (maturity
+    :level experimental
+    :since "2026-11-26")
+  (ecosystem
+    :project "first-post"
+    :ecosystem "metadatastician"
+    :position-type "UNASSIGNED"
+    :purpose "UNASSIGNED"
+    :not ()
+    :pipeline-position "UNASSIGNED"
+    :chain "UNASSIGNED"
+    :coordination standards
+    (related :name "rsr-template-repo" :relationship minted-from :notes "the template this repo was minted from by just repo-init")))

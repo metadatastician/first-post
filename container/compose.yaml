@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# {{PROJECT_NAME}} — portable compose stack (Tier B)
+# first-post — portable compose stack (Tier B)
 #
 # This is the runtime-agnostic, OCI compose-spec file. It works unchanged with:
 #   podman compose  -f container/compose.yaml up -d
@@ -20,11 +20,11 @@ services:
   # ──────────────────────────────────────────────────────────────────────
   # Primary application service
   # ──────────────────────────────────────────────────────────────────────
-  "{{SERVICE_NAME}}":
+  "first-post":
     build:
       context: ..
       dockerfile: container/Containerfile
-    image: "{{REGISTRY}}/{{SERVICE_NAME}}:latest"
+    image: "{{REGISTRY}}/first-post:latest"
     ports:
       - "{{PORT}}:{{PORT}}"
     environment:
@@ -33,7 +33,7 @@ services:
       APP_LOG_FORMAT: "json"
       APP_DATA_DIR: "/data"
     volumes:
-      - "{{SERVICE_NAME}}-data:/data"
+      - "first-post-data:/data"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:{{PORT}}/health"]
@@ -50,7 +50,7 @@ services:
   rokur:
     image: ghcr.io/hyperpolymath/rokur:latest
     environment:
-      ROKUR_BACKEND: "http://{{SERVICE_NAME}}:{{PORT}}"
+      ROKUR_BACKEND: "http://first-post:{{PORT}}"
       ROKUR_LISTEN: "[::]:8081"
       ROKUR_REQUIRED_SECRETS: ""        # comma-separated env names that MUST be set
       ROKUR_AUDIT_LOG: "/var/log/rokur/audit.jsonl"
@@ -60,7 +60,7 @@ services:
     volumes:
       - rokur-audit:/var/log/rokur
     depends_on:
-      "{{SERVICE_NAME}}":
+      "first-post":
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
@@ -95,5 +95,5 @@ services:
       retries: 3
 
 volumes:
-  "{{SERVICE_NAME}}-data":
+  "first-post-data":
   rokur-audit:

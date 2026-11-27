@@ -2,7 +2,7 @@
 // Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 // SPDX-FileCopyrightText: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
 = ADR-0001 — Use Architecture Decision Records
-:revdate: {{CURRENT_YEAR}}-MM-DD
+:revdate: 2026-MM-DD
 :status: ACCEPTED
 
 == Context

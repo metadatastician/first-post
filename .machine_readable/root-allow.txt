@@ -23,6 +23,7 @@ MAINTAINERS.adoc           # maintainer roster
 CONTRIBUTING.md            # Accepted at root OR .github/ — CI (openssf/quality/rhodibot) now checks both; .github/ is the canonical estate location (org-inherited). Allow-listed if present at root.
 SECURITY.md                # Accepted at root OR .github/ — see CONTRIBUTING.md note above; security-policy contractile now accepts the .github/ copy.
 LICENSE
+first-post_chora.deed       # the repo deed (minimal): identity, forges, lineage, status, maturity, ecosystem
 LICENSES/                  # REUSE licence texts (MPL-2.0.txt + CC-BY-SA-4.0.txt) for the dual-licence model (code MPL-2.0 / docs CC-BY-SA-4.0)
 CHANGELOG.md
 CITATION.cff               # citation metadata (surfaced at root by #96)

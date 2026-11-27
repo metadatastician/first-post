@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MPL-2.0
-# {{PROJECT_NAME}} Container Image
+# first-post Container Image
 #
 # Multi-stage build template for Chainguard Wolfi base images.
 # Customise the builder stage for your language and copy the
@@ -11,13 +11,13 @@
 # svalinn files under container/stapeln/ are referenced only as labels.
 #
 # Build (engine-agnostic — substitute podman | nerdctl | docker):
-#   podman build -t {{SERVICE_NAME}}:latest -f container/Containerfile .
+#   podman build -t first-post:latest -f container/Containerfile .
 #
 # Run:
-#   podman run -p {{PORT}}:{{PORT}} {{SERVICE_NAME}}:latest
+#   podman run -p {{PORT}}:{{PORT}} first-post:latest
 #
 # Run with persistent volume:
-#   podman run -p {{PORT}}:{{PORT}} -v {{SERVICE_NAME}}-data:/data {{SERVICE_NAME}}:latest
+#   podman run -p {{PORT}}:{{PORT}} -v first-post-data:/data first-post:latest
 #
 # Via the Justfile (auto-detects engine, prefers cerro-torre when present):
 #   just container-build
@@ -37,7 +37,7 @@
 #   COPY Cargo.toml Cargo.lock ./
 #   COPY src/ ./src/
 #   RUN cargo build --release
-#   # Output: /build/target/release/{{SERVICE_NAME}}
+#   # Output: /build/target/release/first-post
 #
 # --- Elixir ---
 #   RUN apk add --no-cache erl27-elixir-1.18 erlang-27 erlang-27-dev git build-base
@@ -47,14 +47,14 @@
 #   ENV MIX_ENV=prod
 #   RUN mix local.hex --force && mix local.rebar --force && \
 #       mix deps.get --only prod && mix compile && mix release
-#   # Output: /build/_build/prod/rel/{{SERVICE_NAME}}/
+#   # Output: /build/_build/prod/rel/first-post/
 #
 # --- Zig ---
 #   RUN apk add --no-cache zig build-base
 #   COPY build.zig build.zig.zon ./
 #   COPY src/ ./src/
 #   RUN zig build -Doptimize=ReleaseFast
-#   # Output: /build/zig-out/bin/{{SERVICE_NAME}}
+#   # Output: /build/zig-out/bin/first-post
 #
 # Base image: `:latest` is right for a template scaffold (Chainguard rebuilds
 # Wolfi daily). For PRODUCTION builds, pin by digest for reproducibility/supply-
@@ -82,13 +82,13 @@ COPY . .
 FROM cgr.dev/chainguard/wolfi-base:latest
 
 # OCI image labels (compatible with cerro-torre .ctp bundle metadata)
-LABEL org.opencontainers.image.title="{{PROJECT_NAME}}" \
-      org.opencontainers.image.description="{{PROJECT_DESCRIPTION}}" \
-      org.opencontainers.image.url="https://{{FORGE}}/{{OWNER}}/{{REPO}}" \
-      org.opencontainers.image.source="https://{{FORGE}}/{{OWNER}}/{{REPO}}" \
-      org.opencontainers.image.vendor="{{OWNER}}" \
+LABEL org.opencontainers.image.title="first-post" \
+      org.opencontainers.image.description="A self-contained browser idle game about learning snail mail: write letters, buy stamps and route mail across modeled postal networks; no build or dependencies." \
+      org.opencontainers.image.url="https://github.com/metadatastician/first-post" \
+      org.opencontainers.image.source="https://github.com/metadatastician/first-post" \
+      org.opencontainers.image.vendor="metadatastician" \
       org.opencontainers.image.licenses="{{LICENSE}}" \
-      org.opencontainers.image.authors="{{AUTHOR}} <{{AUTHOR_EMAIL}}>" \
+      org.opencontainers.image.authors="hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com>" \
       dev.cerrotorre.manifest="container/stapeln/manifest.toml" \
       dev.cerrotorre.gatekeeper="container/stapeln/.gatekeeper.yaml" \
       dev.stapeln.compose="container/stapeln/compose.toml"
@@ -109,9 +109,9 @@ WORKDIR /app
 
 # TODO: Copy compiled binary/release from builder stage.
 # Examples:
-#   COPY --from=builder /build/target/release/{{SERVICE_NAME}} /app/{{SERVICE_NAME}}
-#   COPY --from=builder /build/_build/prod/rel/{{SERVICE_NAME}} /app/release/
-#   COPY --from=builder /build/zig-out/bin/{{SERVICE_NAME}} /app/{{SERVICE_NAME}}
+#   COPY --from=builder /build/target/release/first-post /app/first-post
+#   COPY --from=builder /build/_build/prod/rel/first-post /app/release/
+#   COPY --from=builder /build/zig-out/bin/first-post /app/first-post
 
 # Copy entrypoint script
 COPY container/entrypoint.sh /app/entrypoint.sh

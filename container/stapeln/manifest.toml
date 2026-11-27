@@ -1,27 +1,27 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Cerro Torre manifest for {{PROJECT_NAME}} .ctp bundle
+# Cerro Torre manifest for first-post .ctp bundle
 #
 # This manifest describes the container image for verified
 # container packaging. Used by `ct pack` to create .ctp bundles.
 
 [metadata]
-name = "{{SERVICE_NAME}}"
-version = "{{VERSION}}"
+name = "first-post"
+version = "0.1.0"
 revision = 1
-summary = "{{PROJECT_DESCRIPTION}}"
+summary = "A self-contained browser idle game about learning snail mail: write letters, buy stamps and route mail across modeled postal networks; no build or dependencies."
 description = """
-{{PROJECT_NAME}} — containerised service packaged as a verified
+first-post — containerised service packaged as a verified
 cerro-torre .ctp bundle with Ed25519 signing and full provenance
 tracking.
 """
 license = "{{LICENSE}}"
-homepage = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-maintainer = "{{AUTHOR}} <{{EMAIL}}>"
+homepage = "https://github.com/metadatastician/first-post"
+maintainer = "hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com>"
 
 [provenance]
-upstream = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
-import_date = {{CURRENT_DATE}}T00:00:00Z
+upstream = "https://github.com/metadatastician/first-post"
+import_date = 2026-11-27T00:00:00Z
 
 [dependencies]
 runtime = ["ca-certificates", "curl"]
@@ -35,7 +35,7 @@ APP_HOST = "[::]"
 APP_PORT = "{{PORT}}"
 
 [outputs]
-primary = "{{SERVICE_NAME}}"
+primary = "first-post"
 split = []
 
 [attestations]

@@ -5,11 +5,11 @@
 
 [metadata]
 version = "1.0.0"
-last-updated = "{{CURRENT_DATE}}"
+last-updated = "2026-11-27"
 
 [anchor]
 schema = "hyperpolymath.anchor/1"
-repo = "{{OWNER}}/{{REPO}}"
+repo = "metadatastician/first-post"
 authority = "upstream-canonical"
 
 purpose = [
@@ -19,9 +19,9 @@ purpose = [
 ]
 
 [identity]
-project = "{{PROJECT_NAME}}"
+project = "first-post"
 kind = "{{PROJECT_KIND}}"                # language | library | service | tool
-one-sentence = "{{PROJECT_PURPOSE}}"
+one-sentence = "A self-contained browser idle game about learning snail mail: write letters, buy stamps and route mail across modeled postal networks; no build or dependencies."
 domain = "{{PROJECT_DOMAIN}}"
 
 [semantic-authority]

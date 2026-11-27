@@ -9,7 +9,7 @@
 
 [metadata]
 version = "1.0.0"
-last-updated = "{{CURRENT_DATE}}"
+last-updated = "2026-11-27"
 spec = "https://github.com/hyperpolymath/standards/blob/main/agentic-a2ml/docs/ADR-002-methodology-layer.adoc"
 
 # ============================================================================
@@ -102,7 +102,7 @@ constraints = [
 
 [methodology.state-validation]
 # A regex, not a literal list. The list form named the exact strings it was
-# meant to catch ("{{PROJECT}}"), so `just repo-init` substituted the detector along
+# meant to catch ("FIRST_POST"), so `just repo-init` substituted the detector along
 # with everything else and shipped reject-if-contains = ["MY_PROJECT", ...] —
 # a guard against unfilled tokens that had been eaten by the filling. The
 # escaped pattern below contains no token for init to match, and covers every

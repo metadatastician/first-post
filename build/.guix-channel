@@ -1,20 +1,20 @@
 ;; SPDX-License-Identifier: MPL-2.0
 ;; Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
 ;;
-;; Guix channel definition for {{PROJECT_NAME}}
+;; Guix channel definition for first-post
 ;;
 ;; To use this channel, add to ~/.config/guix/channels.scm:
 ;;
 ;;   (channel
-;;     (name '{{PROJECT_NAME}})
-;;     (url "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+;;     (name 'first-post)
+;;     (url "https://github.com/metadatastician/first-post")
 ;;     (branch "main"))
 ;;
 ;; Then: guix pull
 
 (channel
   (version 0)
-  (url "https://github.com/{{OWNER}}/{{PROJECT_NAME}}")
+  (url "https://github.com/metadatastician/first-post")
   (dependencies
    (channel
      (name 'guix)

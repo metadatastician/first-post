@@ -19,7 +19,7 @@ K9!
       name = "project-metadata",
       version = "1.0.0",
       description = "Pure data configuration for project metadata",
-      author = "{{AUTHOR}} <{{AUTHOR_EMAIL}}>",
+      author = "hyperpolymath <355856132+HoTT-stuff@users.noreply.github.com>",
     },
   },
 
@@ -30,13 +30,13 @@ K9!
     description = "A project following Rhodium Standard Repositories",
 
     repository = {
-      url = "https://github.com/{{OWNER}}/my-project",
+      url = "https://github.com/metadatastician/my-project",
       type = "git",
     },
 
     author = {
-      name = "{{AUTHOR}}",
-      email = "{{AUTHOR_EMAIL}}",
+      name = "hyperpolymath",
+      email = "355856132+HoTT-stuff@users.noreply.github.com",
       organization = "{{AUTHOR_ORG}}",
     },
 
@@ -45,7 +45,7 @@ K9!
     keywords = [
       "rhodium-standard",
       "rsr",
-      "{{OWNER}}",
+      "metadatastician",
     ],
   },
 

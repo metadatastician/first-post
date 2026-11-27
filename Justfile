@@ -137,18 +137,18 @@ clean-all: clean
 # Run all tests
 test *args:
     #!/usr/bin/env bash
-    # A check that cannot fail is not a check. This recipe MUST be replaced at
-    # mint with the project's real test command; until then it fails loudly
-    # rather than printing "Tests passed!" over an empty run.
-    #
-    # Replace this whole body with one of:
-    #   cargo test --workspace {{args}}
-    #   mix test {{args}}
-    #   zig build test {{args}}
-    #   deno test {{args}}
-    echo "FAIL: \`just test\` has not been wired to a real test command yet." >&2
-    echo "      Edit the 'test' recipe in the Justfile before relying on this gate." >&2
-    exit 1
+    # Runs every shell test under tests/. Each runs even if an earlier one
+    # fails, and the recipe exits non-zero if any failed (no silent green).
+    set -u
+    failed=0
+    for t in tests/e2e.sh tests/aspect_tests.sh tests/workflows/*.sh tests/e2e/*.sh; do
+        echo "== $t"
+        bash "$t" {{args}} || { echo "FAILED: $t" >&2; failed=$((failed + 1)); }
+    done
+    if [ "$failed" -ne 0 ]; then
+        echo "FAIL: $failed test script(s) failed." >&2
+        exit 1
+    fi
 
 # Run tests with verbose output
 test-verbose:

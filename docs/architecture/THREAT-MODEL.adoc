@@ -4,16 +4,16 @@
 <!-- SPDX-License-Identifier: CC-BY-SA-4.0 -->
 <!-- Copyright (c) {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}> -->
 
-# Threat Model: {{PROJECT_NAME}}
+# Threat Model: first-post
 
 ## Document Info
 
 | Field         | Value                          |
 |---------------|--------------------------------|
-| Project       | {{PROJECT_NAME}}               |
+| Project       | first-post               |
 | Version       | 1.0                            |
-| Last Reviewed | {{DATE}}                       |
-| Author        | {{AUTHOR}}                     |
+| Last Reviewed | 2026-11-27                       |
+| Author        | hyperpolymath                     |
 | Methodology   | STRIDE                         |
 
 ## Scope
@@ -36,7 +36,7 @@
 
 ## System Overview
 
-Brief description of {{PROJECT_NAME}} and its architecture.
+Brief description of first-post and its architecture.
 
 > See [STATE-VISUALIZER.adoc](../STATE-VISUALIZER.adoc) for the full architecture diagram and completion dashboard.
 
